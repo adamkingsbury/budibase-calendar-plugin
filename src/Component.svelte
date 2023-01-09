@@ -8,8 +8,10 @@
 	export let dataProvider;
 	export let eventDateMapping;
 	export let eventTitleMapping;
-	export let eventAllDayMapping = null;
+	export let eventAllDayMapping;
 	export let onEventClick = null;
+	export let onDayClick = null;
+	export let onHeaderClick = null;
 	export let stylingHeaderBackgroundColor;
 	export let stylingHeaderTextColor;
 	export let stylingEventHighlightColor;
@@ -29,22 +31,23 @@
 	let month = now.getMonth();
 	// let eventText="Click an item or date";
 
-	let dateKey = eventDateMapping;
-	let titleKey = eventTitleMapping;
-	let allDayKey = eventAllDayMapping;
+	$: dateKey = eventDateMapping || null;
+	$: titleKey = eventTitleMapping || null;
+	$: allDayKey = eventAllDayMapping || null;
+	$: canDisplay = (eventDateMapping && eventTitleMapping)
 
-  const formatAMPM = (date) => {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes.toString().padStart(2, '0');
-    let strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
+	const formatAMPM = (date) => {
+	    let hours = date.getHours();
+	    let minutes = date.getMinutes();
+	    let ampm = hours >= 12 ? 'pm' : 'am';
+	    hours = hours % 12;
+	    hours = hours ? hours : 12;
+	    minutes = minutes.toString().padStart(2, '0');
+	    let strTime = hours + ':' + minutes + ' ' + ampm;
+	    return strTime;
+	  }
 
-	let allItems = dataProvider?.rows?.map(x => { 
+	$: allItems = dataProvider?.rows?.map(x => { 
 		let d = new Date(x[dateKey]);
 		return {
 			title: x[titleKey],
@@ -65,7 +68,7 @@
 	//	You need to call findRowCol() to calc the row/col based on each items start date. Each date box has a Date() property.
 	var items = [];
 
-	const initMonthItems = () => {
+	$: initMonthItems = () => {
 		items = [];
 		
 		let y = year - 1900;
@@ -92,16 +95,16 @@
 		}
 	}
 
-	$: month,year,initContent();
+// 	$: month,year,initContent();
 
-	// choose what date/day gets displayed in each date box.
-	function initContent() {
-		headers = dayNames;
-		initMonth();
-		initMonthItems();
-	}
+// 	// choose what date/day gets displayed in each date box.
+// 	function initContent() {
+// 		headers = dayNames;
+// 		initMonth();
+// 		initMonthItems();
+// 	}
 
-	function initMonth() {
+	$: initMonth = () => {
 		days = [];
 		let monthAbbrev = monthNames[month].slice(0,3);
 		let nextMonthAbbrev = monthNames[(month+1)%12].slice(0,3);
@@ -144,23 +147,26 @@
 	}
 
 	function itemClick(e) {
-    if(onEventClick)
-		  onEventClick(e);
+    		if(onEventClick) onEventClick(e);
 	}
 
 	function dayClick(e) {
+		if(onDayClick) onDayClick(e);
 	}
 	function headerClick(e) {
+		if(onHeaderClick) onHeaderClick(e);
 	}
 
 	function nextMonth() {
-		month++;
-		if (month == 12) {
+		if ((month + 1) == 12) {
 			year++;
 			month=0;
 		}
-    initMonth();
-		initMonthItems();
+		else {
+			month++;
+		}
+//     initMonth();
+// 		initMonthItems();
 	}
 	function prevMonth() {
 		if (month==0) {
@@ -169,8 +175,8 @@
 		} else {
 			month--;
 		}
-    initMonth();
-		initMonthItems();
+//     initMonth();
+// 		initMonthItems();
 	}
 	
 </script>
@@ -195,7 +201,7 @@
 			{headers}
 			{days}
 			{items}
-		on:itemClick={(e)=>itemClick(e)}
+			on:itemClick={(e)=>itemClick(e)}
 			/>
 	{/key}
 </div>
