@@ -38,6 +38,18 @@
         "required": false
       },
       {
+        "type": "event",
+        "label": "On Day Click",
+        "key": "onDayClick",
+        "required": false
+      },
+      {
+        "type": "event",
+        "label": "On Header Click",
+        "key": "onHeaderClick",
+        "required": false
+      },
+      {
         "type": "color",
         "label": "Header Background Color",
         "key": "stylingHeaderBackgroundColor",
