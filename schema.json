@@ -35,19 +35,37 @@
         "type": "event",
         "label": "On Event Click",
         "key": "onEventClick",
-        "required": false
+        "required": false,
+        "context": [
+          {
+            "label": "Clicked Event",
+            "key": "_id"
+          }
+        ]
       },
       {
         "type": "event",
         "label": "On Day Click",
         "key": "onDayClick",
-        "required": false
+        "required": false,
+        "context": [
+          {
+            "label": "Clicked Day",
+            "key": "day"
+          }
+        ]
       },
       {
         "type": "event",
-        "label": "On Header Click",
+        "label": "On Day Column Click",
         "key": "onHeaderClick",
-        "required": false
+        "required": false,
+        "context": [
+          {
+            "label": "Clicked Column",
+            "key": "dayHeader"
+          }
+        ]
       },
       {
         "type": "color",
