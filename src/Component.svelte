@@ -146,15 +146,17 @@
 		return null;	
 	}
 
-	function itemClick(e) {
-    		if(onEventClick) onEventClick(e);
+	function itemClick(item) {
+    		if(onEventClick) onEventClick(item);
 	}
 
-	function dayClick(e) {
-		if(onDayClick) onDayClick(e);
+	function dayClick(day) {
+		if(onDayClick && day.enabled) {
+			onDayClick({"day": day.date});
+		}
 	}
 	function headerClick(e) {
-		if(onHeaderClick) onHeaderClick(e);
+		if(onHeaderClick) onHeaderClick({"day": e});
 	}
 
 	function nextMonth() {
